@@ -20,6 +20,7 @@ class m240429_133912_create_working_hours_table extends Migration
             'time_three' => $this->time(),
             'time_four' => $this->time(),
             'worked_time' => $this->integer()->notNull(),
+            'user_id' => $this->integer()->notNull(),
             'created_at' => $this->dateTime()->notNull(),
             'updated_at' => $this->dateTime()
         ]);

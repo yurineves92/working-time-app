@@ -32,22 +32,62 @@ class WorkingHourController extends Controller
 
     public function actionRegisterPoint()
     {
-        $model = new WorkingHour();
-
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            }
+        $today = date('Y-m-d');
+        $userId = Yii::$app->user->identity->id;
+        $existingRecord = WorkingHour::findOne(['work_date' => $today, 'user_id' => $userId]);
+    
+        if (!$existingRecord) {
+            $model = new WorkingHour();
+            $model->work_date = $today;
+            $model->user_id = $userId;
+            $model->save();
         } else {
-            $model->loadDefaultValues();
+            $model = $existingRecord;
         }
-
-        return $this->render('create', [
+    
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->time_one === null) {
+                $model->time_one = date('H:i:s');
+            } elseif ($model->time_two === null) {
+                $model->time_two = date('H:i:s');
+            } elseif ($model->time_three === null) {
+                $model->time_three = date('H:i:s');
+            } elseif ($model->time_four === null) {
+                $model->time_four = date('H:i:s');
+            }
+        
+            $isTimeFourUpdated = $model->isAttributeChanged('time_four');
+        
+            $model->save();
+    
+            if ($isTimeFourUpdated) {
+                $model->worked_time = $this->calculateWorkedTime($model);
+                $model->save(false);
+            }
+            
+            Yii::$app->session->setFlash('success', 'Ponto adicionado com sucesso.');
+            return $this->redirect(['register-point']);
+        }
+    
+        return $this->render('register-point', [
             'model' => $model,
         ]);
-        return $this->render('register-point');
     }
+    
+    private function calculateWorkedTime($model)
+    {
+        $time_one = strtotime($model->time_one);
+        $time_two = strtotime($model->time_two);
+        $time_three = strtotime($model->time_three);
+        $time_four = strtotime($model->time_four);
 
+        $total_seconds = ($time_two - $time_one) + ($time_four - $time_three);
+
+        $total_hours = round($total_seconds / 3600, 2);
+
+        return $total_hours;
+    }
+    
     public function actionReportMonth()
     {
         return $this->render('report-month');

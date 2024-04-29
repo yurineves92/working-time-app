@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-3">
             <div class="card bg-secondary text-white">
                 <div class="card-body">
-                    <h5 class="card-title">Tickets totais</h5>
+                    <h5 class="card-title">Total de Pontos Hoje</h5>
                     <p class="card-text ticket-value"><i class="fa-regular fa-paste"></i> 3</p>
                 </div>
             </div>
@@ -29,7 +29,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-3">
             <div class="card bg-danger text-white">
                 <div class="card-body">
-                    <h5 class="card-title">Tickets abertos</h5>
+                    <h5 class="card-title">Total de Pontos Faltantes</h5>
                     <p class="card-text ticket-value"><i class="fa-regular fa-eye"></i> 1</p>
                 </div>
             </div>
@@ -37,7 +37,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-3">
             <div class="card bg-primary text-white">
                 <div class="card-body">
-                    <h5 class="card-title">Em atendimento</h5>
+                    <h5 class="card-title">Total em Horas Trabalhadas</h5>
                     <p class="card-text ticket-value"><i class="fa fa-phone"></i> 1</p>
                 </div>
             </div>
@@ -45,7 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="col-md-3">
             <div class="card bg-success text-white">
                 <div class="card-body">
-                    <h5 class="card-title">Tickets fechados</h5>
+                    <h5 class="card-title">Total de Usuários</h5>
                     <p class="card-text ticket-value"><i class="fa fa-check"></i> 1</p>
                 </div>
             </div>

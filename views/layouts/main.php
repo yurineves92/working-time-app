@@ -74,12 +74,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             </div>
             <div class="dropdown">
                 <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
-                    Yuri do Valle Neves
+                    <?= Yii::$app->user->identity->name; ?>
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="#" style="color: white;">Perfil</a></li>
-                    <li><a class="dropdown-item" href="#" style="color: white;">Sair</a></li>
-                </ul>
             </div>
         </div>
     </div>

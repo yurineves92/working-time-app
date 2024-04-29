@@ -3,6 +3,8 @@
 namespace app\models;
 
 use Yii;
+use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "working_hours".
@@ -33,9 +35,9 @@ class WorkingHour extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['work_date', 'worked_time', 'created_at'], 'required'],
             [['work_date', 'time_one', 'time_two', 'time_three', 'time_four', 'created_at', 'updated_at'], 'safe'],
             [['worked_time'], 'integer'],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -45,15 +47,38 @@ class WorkingHour extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'work_date' => 'Work Date',
-            'time_one' => 'Time One',
-            'time_two' => 'Time Two',
-            'time_three' => 'Time Three',
-            'time_four' => 'Time Four',
-            'worked_time' => 'Worked Time',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'id' => 'Cod.',
+            'work_date' => 'Data de Trabalho',
+            'time_one' => 'Entrada 1',
+            'time_two' => 'Saída 1',
+            'time_three' => 'Entrada 2',
+            'time_four' => 'Saída 2',
+            'worked_time' => 'Tempo Trabalhado',
+            'created_at' => 'Criado em',
+            'updated_at' => 'Atualizado em',
         ];
+    }
+
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => TimestampBehavior::class,
+                'value' => new Expression('NOW()')
+            ]
+        ];
+    }
+
+    public function updateTimes()
+    {
+        if ($this->time_one === null) {
+            $this->time_one = date('H:i:s');
+        } elseif ($this->time_two === null) {
+            $this->time_two = date('H:i:s');
+        } elseif ($this->time_three === null) {
+            $this->time_three = date('H:i:s');
+        } elseif ($this->time_four === null) {
+            $this->time_four = date('H:i:s');
+        }
     }
 }
