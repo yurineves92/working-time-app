@@ -41,6 +41,11 @@ class WorkingHour extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+    
     /**
      * {@inheritdoc}
      */
@@ -53,7 +58,7 @@ class WorkingHour extends \yii\db\ActiveRecord
             'time_two' => 'Saída 1',
             'time_three' => 'Entrada 2',
             'time_four' => 'Saída 2',
-            'worked_time' => 'Tempo Trabalhado',
+            'worked_time' => 'Tempo Trabalhado (Em Horas)',
             'created_at' => 'Criado em',
             'updated_at' => 'Atualizado em',
         ];

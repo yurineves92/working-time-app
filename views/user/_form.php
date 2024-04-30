@@ -18,9 +18,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'level')->textInput() ?>
+    <?= $form->field($model, 'level')->dropDownList([
+        '1' => 'Administrator',
+        '2' => 'Usuário',
+    ]); ?>
 
-    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'password')->passwordInput(['maxlength' => true, 'placeholder' => 'Digite a sua senha novamente.']) ?>
     
     <div class="form-group mt-2">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

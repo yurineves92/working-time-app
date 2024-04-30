@@ -52,6 +52,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
     </style>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <script>
         $(document).ready(function() {
             $(".btn-sidebar-toggle").click(function() {
@@ -73,9 +74,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
                 <button class="btn btn-primary btn-sidebar-toggle me-2"><i class="bi bi-list" style="color: white;"></i></button>
             </div>
             <div class="dropdown">
-                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false" style="color: white;">
-                    <?= Yii::$app->user->identity->name; ?>
-                </button>
+                <span><strong>Bem vindo, </strong><?= Yii::$app->user->identity->name; ?></span>
             </div>
         </div>
     </div>
@@ -87,12 +86,26 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => Yii
             <nav id="sidebarMenu" class="sidebar">
                 <div class="position-sticky">
                     <div class="nav flex-column">
-                        <a class="nav-link" href="/dashboard/index"><i class="bi bi-house-door"></i> Dashboard</a>
-                        <a class="nav-link" href="/working-hour/register-point"><i class="bi bi-clock-history"></i> Registrar Ponto</a>
-                        <a class="nav-link" href="/working-hour/report-month"><i class="bi bi-calendar"></i> Relatório Mensal</a>
-                        <a class="nav-link" href="/working-hour/report-administrator"><i class="bi bi-graph-up"></i> Relatório Gerencial</a>
-                        <hr/>
-                        <a class="nav-link" href="/user/index"><i class="bi bi-people"></i> Usuários</a>
+                        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->level == 1): ?>
+                            <a class="nav-link" href="/dashboard/index"><i class="bi bi-house-door"></i> Dashboard</a>
+                            <a class="nav-link" href="/working-hour/register-point"><i class="bi bi-clock-history"></i> Registrar Ponto</a>
+                            <a class="nav-link" href="/working-hour/report-month"><i class="bi bi-calendar"></i> Relatório Mensal</a>
+                            <a class="nav-link" href="/working-hour/report-administrator"><i class="bi bi-graph-up"></i> Relatório Gerencial</a>
+                        <?php else: ?>
+                            <a class="nav-link" href="/working-hour/register-point"><i class="bi bi-clock-history"></i> Registrar Ponto</a>
+                            <a class="nav-link" href="/working-hour/report-month"><i class="bi bi-calendar"></i> Relatório Mensal</a>
+                        <?php endif; ?>
+                        <?php if (!Yii::$app->user->isGuest && Yii::$app->user->identity->level == 1): ?>
+                            <hr style="width: 95%;"/>
+                            <a class="nav-link" href="/user/index"><i class="bi bi-people"></i> Usuários</a>
+                        <?php endif; ?>
+                        <hr style="width: 95%;"/>
+                        <a class="nav-link" href="/user/profile"><i class="bi bi-person-fill"></i> Perfil</a>
+                        <?php if (!Yii::$app->user->isGuest): ?>
+                            <?= Html::beginForm(['/auth/logout'], 'post'); ?>
+                            <?= Html::submitButton('<i class="bi bi-box-arrow-in-left"></i> Sair', ['class' => 'btn btn-link nav-link','style' => 'width:95%']); ?>
+                            <?= Html::endForm(); ?>
+                        <?php endif; ?>
                     </div>
                 </div>
             </nav>

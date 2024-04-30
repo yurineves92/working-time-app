@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\User;
+use app\models\WorkingHour;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -28,13 +30,29 @@ class DashboardController extends Controller
             ]
         ];
     }
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
+
     public function actionIndex()
     {
-        return $this->render('index');
+        $totalPontosHoje = WorkingHour::find()
+            ->where(['DATE(work_date)' => date('Y-m-d')])
+            ->count();
+
+        $totalPontosFaltantes = WorkingHour::find()
+            ->where(['DATE(work_date)' => date('Y-m-d')])
+            ->andWhere(['or', ['time_one' => null], ['time_two' => null], ['time_three' => null], ['time_four' => null]])
+            ->count();
+
+        $totalHorasTrabalhadas = WorkingHour::find()
+            ->where(['DATE(work_date)' => date('Y-m-d')])
+            ->sum('worked_time');
+
+        $totalUsuarios = User::find()->count();
+
+        return $this->render('index', [
+            'totalPontosHoje' => $totalPontosHoje,
+            'totalPontosFaltantes' => $totalPontosFaltantes,
+            'totalHorasTrabalhadas' => $totalHorasTrabalhadas,
+            'totalUsuarios' => $totalUsuarios,
+        ]);
     }
 }

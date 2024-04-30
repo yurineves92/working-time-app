@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\WorkingHour;
+use app\searchs\WorkingHourSearch;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -90,11 +91,23 @@ class WorkingHourController extends Controller
     
     public function actionReportMonth()
     {
-        return $this->render('report-month');
+        $searchModel = new WorkingHourSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('report-month', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 
     public function actionReportAdministrator()
     {
-        return $this->render('report-administrator');
+        $searchModel = new WorkingHourSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams, true);
+
+        return $this->render('report-administrator', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
     }
 }
