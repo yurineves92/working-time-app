@@ -25,6 +25,7 @@ use yii\widgets\ActiveForm;
     <div class="col-auto"> 
         <label class="">Filtros: </label><br/>
         <?= Html::submitButton(Yii::t('app', 'Pesquisar'), ['class' => 'btn btn-primary']) ?>
+        <?= Html::a(Yii::t('app', 'Limpar'), ['working-hour/report-month'], ['class' => 'btn btn-outline-secondary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

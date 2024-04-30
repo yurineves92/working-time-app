@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\User;
 use app\searchs\UserSearch;
 use Yii;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -22,12 +23,27 @@ class UserController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'only' => ['index'],
+                    'rules' => [
+                        [
+                            'actions' => ['index'],
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                    ],
+                    'denyCallback' => function($rule, $action) {
+                        Yii::$app->session->setFlash('success', 'Efetue o login para acessar o sistema!');
+                        return Yii::$app->user->loginRequired();
+                    },
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
                     ],
-                ],
+                ]
             ]
         );
     }
@@ -115,6 +131,15 @@ class UserController extends Controller
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
+    }
+
+    public function actionProfile()
+    {
+        $model = $this->findModel(Yii::$app->user->identity->id);
+
+        return $this->render('profile', [
+            'model' => $model,
+        ]);
     }
 
     /**
